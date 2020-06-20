@@ -47,8 +47,7 @@ exports.up = function (knex) {
 				.onUpdate("CASCADE")
 				.onDelete("CASCADE");
 			table
-				.integer("song_id")
-				.unsigned()
+				.string("song_id")
 				.notNullable()
 				.references("songs.id")
 				.onUpdate("CASCADE")
@@ -64,8 +63,7 @@ exports.up = function (knex) {
 				.onUpdate("CASCADE")
 				.onDelete("CASCADE");
 			table
-				.integer("song_id")
-				.unsigned()
+				.string("song_id")
 				.notNullable()
 				.references("songs.id")
 				.onUpdate("CASCADE")
