@@ -1,130 +1,81 @@
+exports.up = function (knex) {
+	return knex.schema
+		.createTable("users", table => {
+			table.increments("id");
+			table.string("username", 128).notNullable();
+			table.string("password", 128).notNullable();
+		})
 
-exports.up = function(knex) {
-  return knex.schema.createTable('user', col=>{
-      col.increments('id');
-      col.string('username',128)
-        .notNullable();
-      col.string('password',128)
-        .notNullable();
-  })
-  .createTable('playlist', col=>{
-      col.increments('id');
-      col.string('name',128)
-        .notNullable();
-  })
+		.createTable("songs", table => {
+			table.string("id", 128).notNullable().unique();
+			table.string("name", 128).notNullable().unique();
+			table.string("artist", 128).notNullable();
+			table.string("album", 128).notNullable();
+			table.integer("popularity").unsigned().notNullable();
+			table.integer("duration_ms").unsigned().notNullable();
+			table.integer("key").unsigned().notNullable();
+			table.integer("mode").unsigned().notNullable();
+			table.integer("time_signature").unsigned().notNullable();
+			table.integer("danceability").unsigned().notNullable();
+			table.integer("energy").unsigned().notNullable();
+			table.integer("instrumentalness").unsigned().notNullable();
+			table.integer("liveness").unsigned().notNullable();
+			table.integer("loudness").unsigned().notNullable();
+			table.integer("speechiness").unsigned().notNullable();
+			table.integer("valence").unsigned().notNullable();
+			table.integer("tempo").unsigned().notNullable();
+		})
 
-  .createTable('user_playlists', col=>{
-      col.integer('playlist_id')
-        .unsigned()
-         .notNullable()
-        .references('playlist.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE')
-      col.integer('owner_id')
-        .unsigned()
-        .notNullable()
-        .references('user.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE')
-  })
-  .createTable('favorites', col=>{
-      col.increments('id')
-      col.integer('owner_id')
-        .unsigned()
-        .notNullable()
-        .references('user.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE')
-  })
-   .createTable('song',col=>{
-      col.string('id',128)
-        .notNullable()
-        .unique()
-      col.string('name',128)
-        .notNullable()
-        .unique()
-      col.string('artist',128)
-        .notNullable()
-      col.string('album',128)
-        .notNullable()
-      col.integer('popularity')
-        .unsigned()
-        .notNullable() 
-      col.integer('duration_ms')
-        .unsigned()
-        .notNullable()
-      col.integer('key')
-        .unsigned()
-        .notNullable()
-      col.integer('mode')
-        .unsigned()
-        .notNullable()
-      col.integer('time_signature')
-        .unsigned()
-        .notNullable()
-      col.integer('danceability')
-        .unsigned()
-        .notNullable()
-      col.integer('energy')
-        .unsigned()
-        .notNullable()
-      col.integer('instrumentalness')
-        .unsigned()
-        .notNullable()
-      col.integer('liveness')
-        .unsigned()
-        .notNullable()
-      col.integer('loudness')
-        .unsigned()
-        .notNullable()
-      col.integer('speechiness')
-        .unsigned()
-        .notNullable()
-      col.integer('valence')
-        .unsigned()
-        .notNullable()
-      col.integer('tempo')
-        .unsigned()
-        .notNullable()    
-  })
-    .createTable('playlist_songs', col=>{
-        col.integer('playlist_id')
-           .references('playlist.id')
-           .unsigned()
-           .notNullable()
-           .onUpdate('CASCADE')
-           .onDelete('CASCADE')
-        col.integer('song_id')
-            .references('song.id')
-            .unsigned()
-            .notNullable()
-            .onUpdate('CASCADE')
-            .onDelete('CASCADE')
-    })
-    .createTable('favorite_songs', col=>{
-        col.integer('favorites-id')
-            .references('favorites.id')
-            .unsigned()
-            .notNullable()
-            .onDelete('CASCADE')
-            .onUpdate('CASCADE')
-        col.integer('song_id')
-            .references('song.id')
-            .unsigned()
-            .notNullable()
-            .onUpdate('CASCADE')
-            .onDelete('CASCADE')
-    })
+		.createTable("playlists", table => {
+			table.increments("id");
+			table.string("name", 128).notNullable();
+			table
+				.integer("owner_id")
+				.unsigned()
+				.notNullable()
+				.references("users.id")
+				.onUpdate("CASCADE")
+				.onDelete("CASCADE");
+		})
+
+		.createTable("playlist_songs", table => {
+			table
+				.integer("playlist_id")
+				.unsigned()
+				.notNullable()
+				.references("playlists.id")
+				.onUpdate("CASCADE")
+				.onDelete("CASCADE");
+			table
+				.string("song_id")
+				.notNullable()
+				.references("songs.id")
+				.onUpdate("CASCADE")
+				.onDelete("CASCADE");
+		})
+
+		.createTable("favorite_songs", table => {
+			table
+				.integer("owner_id")
+				.unsigned()
+				.notNullable()
+				.references("users.id")
+				.onUpdate("CASCADE")
+				.onDelete("CASCADE");
+			table
+				.string("song_id")
+				.notNullable()
+				.references("songs.id")
+				.onUpdate("CASCADE")
+				.onDelete("CASCADE");
+		});
 };
 
-exports.down = function(knex) {
-  return knex.schema
-  .dropTableIfExists('favorite_songs')
-  .dropTableIfExists('playlist_songs')
-  .dropTableIfExists('song')
-  .dropTableIfExists('favorites')
-  .dropTableIfExists('user_playlists')
-  .dropTableIfExists('playlist')
-  .dropTableIfExists('user')
-  
+exports.down = function (knex) {
+	return knex.schema
+		.dropTableIfExists("favorite_songs")
+		.dropTableIfExists("playlist_songs")
+		.dropTableIfExists("playlists")
+		.dropTableIfExists("songs")
+		.dropTableIfExists("users");
 };
