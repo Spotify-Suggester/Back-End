@@ -44,10 +44,16 @@ module.exports = {
   production: {
     client: 'pg',
     connection: pgConnection,
-    pool: {
-      min: 2,
-      max: 10
-    },
+    useNullAsDefault: true,
+    pool:{
+      afterCreate: (conn,done)=>{
+        conn.run('Pragma foreign_keys= ON',done);
+      }
+    }
+    // pool: {
+    //   min: 2,
+    //   max: 10
+    // },
     migrations: {
       directory: './data/migrations',
     },
