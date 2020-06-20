@@ -45,11 +45,7 @@ module.exports = {
     client: 'pg',
     connection: pgConnection,
     useNullAsDefault: true,
-    pool:{
-      afterCreate: (conn,done)=>{
-        conn.run('Pragma foreign_keys= ON',done);
-      }
-    }
+   
     // pool: {
     //   min: 2,
     //   max: 10
@@ -59,6 +55,11 @@ module.exports = {
     },
     seeds:{
       directory: './data/seeds',
+    },
+    pool:{
+      afterCreate: (conn,done)=>{
+        conn.run('Pragma foreign_keys= ON',done);
+      }
     },
   },
 };
