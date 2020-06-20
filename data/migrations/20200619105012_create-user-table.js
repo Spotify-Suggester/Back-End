@@ -1,42 +1,42 @@
 
 exports.up = function(knex) {
-  return knex.schema.createTable('User', col=>{
+  return knex.schema.createTable('user', col=>{
       col.increments('id');
       col.string('username',128)
         .notNullable();
       col.string('password',128)
         .notNullable();
   })
-  .createTable('Playlist', col=>{
+  .createTable('playlist', col=>{
       col.increments('id');
       col.string('name',128)
         .notNullable();
   })
 
-  .createTable('User_Playlists', col=>{
+  .createTable('user_playlists', col=>{
       col.integer('playlist_id')
         .unsigned()
          .notNullable()
-        .references('Playlist.id')
+        .references('playlist.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
       col.integer('owner_id')
         .unsigned()
         .notNullable()
-        .references('User.id')
+        .references('user.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
   })
-  .createTable('Favorites', col=>{
+  .createTable('favorites', col=>{
       col.increments('id')
       col.integer('owner_id')
         .unsigned()
         .notNullable()
-        .references('User.id')
+        .references('user.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
   })
-   .createTable('Song',col=>{
+   .createTable('song',col=>{
       col.string('id',128)
         .notNullable()
         .unique()
@@ -87,29 +87,29 @@ exports.up = function(knex) {
         .unsigned()
         .notNullable()    
   })
-    .createTable('Playlist_Songs', col=>{
+    .createTable('playlist_songs', col=>{
         col.integer('playlist_id')
-           .references('Playlist.id')
+           .references('playlist.id')
            .unsigned()
            .notNullable()
            .onUpdate('CASCADE')
            .onDelete('CASCADE')
         col.integer('song_id')
-            .references('Song.id')
+            .references('song.id')
             .unsigned()
             .notNullable()
             .onUpdate('CASCADE')
             .onDelete('CASCADE')
     })
-    .createTable('Favorite_Songs', col=>{
+    .createTable('favorite_songs', col=>{
         col.integer('favorites-id')
-            .references('Favorites.id')
+            .references('favorites.id')
             .unsigned()
             .notNullable()
             .onDelete('CASCADE')
             .onUpdate('CASCADE')
         col.integer('song_id')
-            .references('Song.id')
+            .references('song.id')
             .unsigned()
             .notNullable()
             .onUpdate('CASCADE')
@@ -119,12 +119,12 @@ exports.up = function(knex) {
 
 exports.down = function(knex) {
   return knex.schema
-  .dropTableIfExists('Favorite_Songs')
-  .dropTableIfExists('Playlist_Songs')
-  .dropTableIfExists('Song')
-  .dropTableIfExists('Favorites')
-  .dropTableIfExists('User_Playlists')
-  .dropTableIfExists('Playlist')
-  .dropTableIfExists('User')
+  .dropTableIfExists('favorite_songs')
+  .dropTableIfExists('playlist_songs')
+  .dropTableIfExists('song')
+  .dropTableIfExists('favorites')
+  .dropTableIfExists('user_playlists')
+  .dropTableIfExists('playlist')
+  .dropTableIfExists('user')
   
 };
