@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
 
 	try {
 		const newUser = await Users.add(user);
-		res.status(201).json(newUser);
+		res.status(201).json({ id: newUser.id, username: newUser.username });
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -25,13 +25,19 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
 	let { username, password } = req.body;
 
+	if (!username || !password) res.status(400).json({ message: "Credentials must be provided" });
+
 	try {
 		const user = await Users.findBy({ username }).first();
 
 		if (user && bcrypt.compareSync(password, user.password)) {
 			const token = generateToken(user);
-			const access_token = getAccessToken();
-			res.status(200).json({ message: `Welcome ${user.username}!`, token, access_token });
+			const access_token = await getAccessToken();
+			res.status(200).json({
+				message: `Authenticated successfully`,
+				auth: { token },
+				spotify: { access_token },
+			});
 		} else {
 			res.status(401).json({ message: "Invalid credentials" });
 		}

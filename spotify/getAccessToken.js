@@ -1,7 +1,7 @@
 const request = require("request-promise");
 
-module.exports = function getAccessToken() {
-    const authOptions = {
+module.exports = async function getAccessToken() {
+	const authOptions = {
 		url: "https://accounts.spotify.com/api/token",
 		form: {
 			grant_type: "client_credentials",
@@ -20,6 +20,6 @@ module.exports = function getAccessToken() {
 		.post(authOptions)
 		.then(res => res)
 		.catch(err => err);
-    
-    return access_token
-}
+
+	return access_token;
+};
