@@ -52,6 +52,8 @@ Returns a `200 OK` status code, the auth web token and the spotify access token.
 {
   message: "Authenticated successfully",
   auth: {
+      username: "gsgarces",
+      id: 5,
       token: "eyJhbGciOiJIUzI ... ZmT1m0dNlzXikDU"
   },
   spotify: {
