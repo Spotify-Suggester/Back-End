@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
 			const access_token = await getAccessToken();
 			res.status(200).json({
 				message: `Authenticated successfully`,
-				auth: { token },
+				auth: { username: user.username, id: user.id, token },
 				spotify: { access_token },
 			});
 		} else {
