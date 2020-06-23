@@ -3,6 +3,7 @@ const db = require("../data/knexfile-config");
 module.exports = {
 	addSongToFavorites,
 	findFavoriteSongs,
+	deleteSongFromFavorites
 };
 
 async function addSongToFavorites(songId, ownerId) {
@@ -37,4 +38,12 @@ async function findFavoriteSongs(userId) {
 		.where("fs.owner_id", userId);
 
 	return favoriteSongs;
+}
+
+async function deleteSongFromFavorites(id,songid){
+	await db('favorite_songs as fs')
+	.where('fs.owner_id',id)
+	.where('fs.song_id',songid)
+	.del()
+	return findFavoriteSongs(id)
 }

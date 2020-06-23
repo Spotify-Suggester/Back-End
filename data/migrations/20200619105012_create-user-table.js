@@ -62,14 +62,12 @@ exports.up = function (knex) {
 				.unsigned()
 				.notNullable()
 				.references("users.id")
-				.onUpdate("CASCADE")
-				.onDelete("CASCADE");
+				.onDelete('NO ACTION')
 			table
 				.string("song_id")
 				.notNullable()
 				.references("songs.id")
-				.onUpdate("CASCADE")
-				.onDelete("CASCADE");
+				.onDelete('NO ACTION')
 		});
 };
 
