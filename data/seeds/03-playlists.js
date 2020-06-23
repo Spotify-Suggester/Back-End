@@ -1,35 +1,35 @@
 exports.seed = function (knex) {
 	return knex("playlists").insert([
 		{
-			name: "playlist1",
+			playlist_name: "playlist1",
 			owner_id: 1,
 		},
 		{
-			name: "playlist2",
+			playlist_name: "playlist2",
 			owner_id: 1,
 		},
 		{
-			name: "playlist3",
+			playlist_name: "playlist3",
 			owner_id: 2,
 		},
 		{
-			name: "playlist4",
+			playlist_name: "playlist4",
 			owner_id: 2,
 		},
 		{
-			name: "playlist5",
+			playlist_name: "playlist5",
 			owner_id: 3,
 		},
 		{
-			name: "playlist6",
+			playlist_name: "playlist6",
 			owner_id: 3,
 		},
 		{
-			name: "playlist7",
+			playlist_name: "playlist7",
 			owner_id: 4,
 		},
 		{
-			name: "playlist8",
+			playlist_name: "playlist8",
 			owner_id: 4,
 		},
 	]);

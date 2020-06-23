@@ -9,31 +9,32 @@ module.exports = {
 };
 
 async function add(playlist) {
-	const [id] = await db("playlist").insert(playlist, "id");
+	const [id] = await db("playlists").insert(playlist, "id");
 
 	return findById(id);
 }
 
 function find() {
-	return db("playlist").select("id", "name");
+	return db("playlists").select("id", "name");
 }
 
 function findBy(filter) {
-	return db("playlist").where(filter);
+	return db("playlists").where(filter);
 }
 
 function findById(id) {
-	return db("playlist").where({ id }).first();
+	return db("playlists").where({ id }).first();
 }
 
 async function findPlaylistSongs(playlistId) {
 	const playlistSongs = await db("playlist_songs as ps")
-		.join("song as s", "ps.song_id", "s.id")
+		.join("songs as s", "ps.song_id", "s.id")
 		.select(
 			"s.id",
 			"s.name",
 			"s.artist",
 			"s.album",
+			"s.image_url",
 			"s.popularity",
 			"s.duration_ms",
 			"s.key",

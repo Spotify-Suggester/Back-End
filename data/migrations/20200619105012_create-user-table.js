@@ -4,6 +4,7 @@ exports.up = function (knex) {
 			table.increments("id");
 			table.string("username", 128).notNullable();
 			table.string("password", 128).notNullable();
+			table.integer("recommended_request").unsigned();
 		})
 
 		.createTable("songs", table => {
@@ -11,6 +12,7 @@ exports.up = function (knex) {
 			table.string("name", 128).notNullable().unique();
 			table.string("artist", 128).notNullable();
 			table.string("album", 128).notNullable();
+			table.string("image_url", 128).notNullable();
 			table.integer("popularity").unsigned().notNullable();
 			table.integer("duration_ms").unsigned().notNullable();
 			table.integer("key").unsigned().notNullable();
@@ -28,7 +30,7 @@ exports.up = function (knex) {
 
 		.createTable("playlists", table => {
 			table.increments("id");
-			table.string("name", 128).notNullable();
+			table.string("playlist_name", 128).notNullable();
 			table
 				.integer("owner_id")
 				.unsigned()
