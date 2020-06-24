@@ -55,14 +55,14 @@ router.post("/:id/favorites", async (req, res) => {
 			const newSong = await Songs.add(song);
 			favorite_songs = await Favorites.addSongToFavorites(songId, id);
 
-			res.status(400).json({
+			res.status(200).json({
 				...favorite_songs,
 				message: favorite_songs.message,
 				new_song: newSong,
 			});
 		} else {
 			favorite_songs = await Favorites.addSongToFavorites(songId, id);
-			res.status(400).json({ ...favorite_songs, message: favorite_songs.message });
+			res.status(200).json({ ...favorite_songs, message: favorite_songs.message });
 		}
 	} catch (err) {
 		res.status(500).json(`Internal Server Error. Please try again`);
@@ -72,8 +72,6 @@ router.post("/:id/favorites", async (req, res) => {
 // Remove song from user favorites
 router.delete("/:id/favorites/:songId", async (req, res) => {
 	const { id, songId } = req.params;
-
-	if (!songId) res.status(400).json({ message: "Song id is required" });
 
 	try {
 		const deleted = await Favorites.removeSongFromFavorites(songId, id);
