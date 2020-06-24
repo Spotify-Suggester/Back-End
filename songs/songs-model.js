@@ -4,7 +4,7 @@ module.exports = {
 	add,
 	find,
 	findBy,
-    findById,
+	findById,
 };
 
 async function add(song) {
@@ -18,8 +18,8 @@ function find() {
 		"id",
 		"name",
 		"artist",
-        "album",
-        "image_url",
+		"album",
+		"image_url",
 		"popularity",
 		"duration_ms",
 		"key",
@@ -40,7 +40,8 @@ function findBy(filter) {
 	return db("songs").where(filter);
 }
 
-function findById(id) {
-	return db("songs").where({ id }).first();
-}
+async function findById(id) {
+	const song = await db("songs").where({ id }).first();
 
+	return song;
+}
