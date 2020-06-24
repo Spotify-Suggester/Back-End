@@ -9,6 +9,12 @@ const getAccessToken = require("../spotify/getAccessToken");
 router.post("/register", async (req, res) => {
 	const user = req.body;
 
+	const found = await Users.findBy({ username: user.username }).first();
+	if (found) {
+		res.status(400).json({ message: "This user already exists - please log in" });
+		return;
+	}
+
 	const hash = bcrypt.hashSync(user.password, 10);
 
 	user.password = hash;
