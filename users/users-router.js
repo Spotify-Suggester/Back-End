@@ -5,7 +5,7 @@ const Favorites = require("../users/favorite_songs-model");
 const Songs = require("../songs/songs-model");
 const getSong = require("../spotify/getSong");
 
-// get recommended
+// Get recommended
 router.get("/:id/recommend", async (req, res) => {
 	const { id } = req.params;
 
@@ -36,6 +36,7 @@ router.get("/:id/recommend", async (req, res) => {
 	}
 });
 
+// Add song to user favorites
 router.post("/:id/favorites", async (req, res) => {
 	const songId = req.body.song_id;
 	const { id } = req.params;
@@ -67,6 +68,7 @@ router.post("/:id/favorites", async (req, res) => {
 	}
 });
 
+// Remove song from user favorites
 router.delete("/:id/favorites/:songId", async (req, res) => {
 	const { id, songId } = req.params;
 
@@ -80,6 +82,7 @@ router.delete("/:id/favorites/:songId", async (req, res) => {
 	}
 });
 
+// Get user favorites
 router.get("/:id/favorites", async (req, res) => {
 	const { id } = req.params;
 
