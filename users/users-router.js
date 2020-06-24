@@ -3,6 +3,7 @@ const axios = require("axios");
 
 const Favorites = require("../users/favorite_songs-model");
 const Songs = require("../songs/songs-model");
+const Users = require("../users/users-model");
 const getSong = require("../spotify/getSong");
 
 // Get recommended
@@ -85,6 +86,9 @@ router.delete("/:id/favorites/:songId", async (req, res) => {
 // Get user favorites
 router.get("/:id/favorites", async (req, res) => {
 	const { id } = req.params;
+	const found = await Users.findById(id);
+
+	if (!found) res.status(400).json({ message: "User not found" });
 
 	try {
 		const favorites = await Favorites.findFavoriteSongs(id);
