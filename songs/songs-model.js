@@ -12,11 +12,10 @@ async function add(song) {
 	try {
 		const [id] = await db("songs").insert(song, "id");
 		console.log("ID", id);
+		return findById(id);
 	} catch (error) {
 		console.log(error);
 	}
-
-	return findById(id);
 }
 
 function find() {
