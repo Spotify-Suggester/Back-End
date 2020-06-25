@@ -13,19 +13,19 @@ exports.up = function (knex) {
 			table.string("artist", 128).notNullable();
 			table.string("album", 128).notNullable();
 			table.string("image_url", 128).notNullable();
-			table.integer("popularity").unsigned();
-			table.integer("duration_ms").unsigned();
-			table.integer("key").unsigned();
-			table.integer("mode").unsigned();
-			table.integer("time_signature").unsigned();
-			table.integer("danceability").unsigned();
-			table.integer("energy").unsigned();
-			table.integer("instrumentalness").unsigned();
-			table.integer("liveness").unsigned();
-			table.integer("loudness").unsigned();
-			table.integer("speechiness").unsigned();
-			table.integer("valence").unsigned();
-			table.integer("tempo").unsigned();
+			table.decimal("popularity").unsigned();
+			table.decimal("duration_ms").unsigned();
+			table.decimal("key").unsigned();
+			table.decimal("mode").unsigned();
+			table.decimal("time_signature").unsigned();
+			table.decimal("danceability").unsigned();
+			table.decimal("energy").unsigned();
+			table.decimal("instrumentalness").unsigned();
+			table.decimal("liveness").unsigned();
+			table.decimal("loudness");
+			table.decimal("speechiness").unsigned();
+			table.decimal("valence").unsigned();
+			table.decimal("tempo").unsigned();
 		})
 
 		.createTable("playlists", table => {
