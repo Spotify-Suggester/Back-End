@@ -8,7 +8,10 @@ module.exports = {
 };
 
 async function add(song) {
+	console.log("Add song: ", song);
 	const [id] = await db("songs").insert(song, "id");
+
+	console.log(id);
 
 	return findById(id);
 }
