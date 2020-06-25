@@ -13,6 +13,7 @@ async function addSongToFavorites(songId, ownerId) {
 	if (found.length === 0) {
 		await db("favorite_songs").insert({ owner_id: Number(ownerId), song_id: songId });
 		const favorites = await findFavoriteSongs(ownerId);
+		console.log("addSong favorites: ", favorites);
 
 		return {
 			message: "Song added successfully",

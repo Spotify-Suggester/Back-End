@@ -11,11 +11,10 @@ async function add(song) {
 	console.log("Add song: ", song);
 	try {
 		const [id] = await db("songs").insert(song, "id");
+		console.log("ID", id);
 	} catch (error) {
 		console.log(error);
 	}
-
-	console.log(id);
 
 	return findById(id);
 }
@@ -48,7 +47,12 @@ function findBy(filter) {
 }
 
 async function findById(id) {
-	const song = await db("songs").where({ id }).first();
-
-	return song;
+	try {
+		const songPromise = db("songs").where({ id }).first();
+		const song = await songPromise.then(res => res).catch(err => err);
+		console.log("findById song: ", song);
+		return song;
+	} catch (error) {
+		console.log(error);
+	}
 }

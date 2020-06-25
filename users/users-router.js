@@ -48,6 +48,7 @@ router.post("/:id/favorites", async (req, res) => {
 	try {
 		let favorite_songs;
 		const found = await Songs.findById(songId);
+		console.log("TEST");
 		console.log("Found: ", found);
 		if (!found) {
 			const song = await getSong(songId)
