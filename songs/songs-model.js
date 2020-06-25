@@ -9,7 +9,11 @@ module.exports = {
 
 async function add(song) {
 	console.log("Add song: ", song);
-	const [id] = await db("songs").insert(song, "id");
+	try {
+		const [id] = await db("songs").insert(song, "id");
+	} catch (error) {
+		console.log(error);
+	}
 
 	console.log(id);
 
