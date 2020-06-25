@@ -40,6 +40,7 @@ router.get("/:id/recommend", async (req, res) => {
 // Add song to user favorites
 router.post("/:id/favorites", async (req, res) => {
 	const songId = req.body.song_id;
+	console.log("Song Id: ", songId);
 	const { id } = req.params;
 
 	if (!songId) res.status(400).json({ message: "Song id is required" });
@@ -47,13 +48,19 @@ router.post("/:id/favorites", async (req, res) => {
 	try {
 		let favorite_songs;
 		const found = await Songs.findById(songId);
+		console.log("Found: ", found);
 		if (!found) {
 			const song = await getSong(songId)
 				.then(res => res)
 				.catch(err => err);
 
+			console.log("Spotify Song: ", song);
 			const newSong = await Songs.add(song);
+
+			console.log("newSong: ", newSong);
 			favorite_songs = await Favorites.addSongToFavorites(songId, id);
+
+			console.log("favorite_songs: ", favorite_songs);
 
 			res.status(200).json({
 				...favorite_songs,
