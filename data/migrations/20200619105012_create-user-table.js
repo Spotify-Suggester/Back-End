@@ -13,19 +13,19 @@ exports.up = function (knex) {
 			table.string("artist", 128).notNullable();
 			table.string("album", 128).notNullable();
 			table.string("image_url", 128).notNullable();
-			table.integer("popularity").unsigned().notNullable();
-			table.integer("duration_ms").unsigned().notNullable();
-			table.integer("key").unsigned().notNullable();
-			table.integer("mode").unsigned().notNullable();
-			table.integer("time_signature").unsigned().notNullable();
-			table.integer("danceability").unsigned().notNullable();
-			table.integer("energy").unsigned().notNullable();
-			table.integer("instrumentalness").unsigned().notNullable();
-			table.integer("liveness").unsigned().notNullable();
-			table.integer("loudness").unsigned().notNullable();
-			table.integer("speechiness").unsigned().notNullable();
-			table.integer("valence").unsigned().notNullable();
-			table.integer("tempo").unsigned().notNullable();
+			table.integer("popularity").unsigned();
+			table.integer("duration_ms").unsigned();
+			table.integer("key").unsigned();
+			table.integer("mode").unsigned();
+			table.integer("time_signature").unsigned();
+			table.integer("danceability").unsigned();
+			table.integer("energy").unsigned();
+			table.integer("instrumentalness").unsigned();
+			table.integer("liveness").unsigned();
+			table.integer("loudness").unsigned();
+			table.integer("speechiness").unsigned();
+			table.integer("valence").unsigned();
+			table.integer("tempo").unsigned();
 		})
 
 		.createTable("playlists", table => {
