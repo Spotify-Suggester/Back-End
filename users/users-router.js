@@ -13,14 +13,29 @@ router.post("/:id/recommend", async (req, res) => {
 
 	try {
 		const favorites = await Favorites.findFavoriteSongs(id);
-		console.log(favorites);
+
+		var data = [...favorites, mood];
+		
+		var avg = Array.from(data.reduce(
+				(acc, obj) => Object.keys(obj).reduce( 
+					(acc, key) => typeof obj[key] == "number"
+						? acc.set(key, (acc.get(key) || []).concat(obj[key]))
+						: acc,
+				acc),
+			new Map()), 
+				([name, values]) =>
+					({ name, average: values.reduce( (a,b) => a+b ) / values.length })
+			);
+		
+		console.log('AVERAGE: ', avg);
+
 		const DSModel = {
 			favorite_songs: favorites,
 			mood,
 		};
 
 		const recs = await axios
-			.post("https://spotify-flask-1.herokuapp.com", { DSModel })
+			.post("https://spotify-flask-1.herokuapp.com", { ...DSModel })
 			.then(res => res)
 			.catch(err => err);
 
@@ -46,7 +61,6 @@ router.post("/:id/recommend", async (req, res) => {
 // Add song to user favorites
 router.post("/:id/favorites", async (req, res) => {
 	const songId = req.body.song_id;
-	console.log("Song Id: ", songId);
 	const { id } = req.params;
 
 	if (!songId) res.status(400).json({ message: "Song id is required" });
@@ -54,20 +68,15 @@ router.post("/:id/favorites", async (req, res) => {
 	try {
 		let favorite_songs;
 		const found = await Songs.findById(songId);
-		console.log("TEST");
-		console.log("Found: ", found);
 		if (!found) {
 			const song = await getSong(songId)
 				.then(res => res)
 				.catch(err => err);
 
-			console.log("Spotify Song: ", song);
 			const newSong = await Songs.add(song);
 
-			console.log("newSong: ", newSong);
 			favorite_songs = await Favorites.addSongToFavorites(songId, id);
 
-			console.log("favorite_songs: ", favorite_songs);
 
 			res.status(200).json({
 				...favorite_songs,

@@ -21,7 +21,12 @@ router.post("/register", async (req, res) => {
 
 	try {
 		const newUser = await Users.add(user);
-		res.status(201).json({ id: newUser.id, username: newUser.username });
+		const token = generateToken(newUser);
+		const access_token = await getAccessToken();
+		res.status(201).json({
+			auth: { id: newUser.id, username: newUser.username, token },
+			spotify: { access_token },
+		});
 	} catch (error) {
 		res.status(500).json(error);
 	}

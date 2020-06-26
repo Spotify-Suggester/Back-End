@@ -42,8 +42,6 @@ const songPromise = async songId => {
 		tempo: songFeatures.tempo,
 	};
 
-	console.log(songFeatures);
-
 	return Promise.resolve(songModel);
 };
 
