@@ -67,6 +67,7 @@ async function findFavoriteSongs(userId) {
 			"s.popularity",
 			"s.duration_ms",
 			"s.key",
+			"s.acousticness",
 			"s.mode",
 			"s.time_signature",
 			"s.danceability",

@@ -28,6 +28,7 @@ function find() {
 		"popularity",
 		"duration_ms",
 		"key",
+		"acousticness",
 		"mode",
 		"time_signature",
 		"danceability",

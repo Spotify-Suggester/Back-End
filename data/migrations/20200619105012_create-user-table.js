@@ -16,6 +16,7 @@ exports.up = function (knex) {
 			table.decimal("popularity").unsigned();
 			table.decimal("duration_ms").unsigned();
 			table.decimal("key").unsigned();
+			table.decimal("acousticness").unsigned();
 			table.decimal("mode").unsigned();
 			table.decimal("time_signature").unsigned();
 			table.decimal("danceability").unsigned();

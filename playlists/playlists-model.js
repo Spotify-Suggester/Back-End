@@ -38,6 +38,7 @@ async function findPlaylistSongs(playlistId) {
 			"s.popularity",
 			"s.duration_ms",
 			"s.key",
+			"s.acousticness",
 			"s.mode",
 			"s.time_signature",
 			"s.danceability",

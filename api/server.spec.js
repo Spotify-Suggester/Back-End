@@ -11,7 +11,7 @@ describe("server.js", () => {
 			const res = await request(server).get("/");
 			expect(res.status).toBe(200);
 		});
-		it("should be json", async () => {
+		it("should be html", async () => {
 			const res = await request(server).get("/");
 			expect(res.type).toBe("text/html");
 		});

@@ -29,6 +29,7 @@ const songPromise = async songId => {
 		popularity: song.popularity,
 		duration_ms: songFeatures.duration_ms,
 		key: songFeatures.key,
+		acousticness: songFeatures.acousticness,
 		mode: songFeatures.mode,
 		time_signature: songFeatures.time_signature,
 		danceability: songFeatures.danceability,
@@ -40,6 +41,8 @@ const songPromise = async songId => {
 		valence: songFeatures.valence,
 		tempo: songFeatures.tempo,
 	};
+
+	console.log(songFeatures);
 
 	return Promise.resolve(songModel);
 };
