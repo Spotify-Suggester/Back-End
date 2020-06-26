@@ -7,16 +7,22 @@ const Users = require("../users/users-model");
 const getSong = require("../spotify/getSong");
 
 // Get recommended
-router.get("/:id/recommend", async (req, res) => {
+router.post("/:id/recommend", async (req, res) => {
 	const { id } = req.params;
+	const mood = req.body;
 
 	try {
 		const favorites = await Favorites.findFavoriteSongs(id);
 		console.log(favorites);
-		// const recs = await axios
-		// 	.post("https://spotify-flask-1.herokuapp.com", { favorites })
-		// 	.then(res => res)
-		// 	.catch(err => err);
+		const DSModel = {
+			favorite_songs: favorites,
+			mood,
+		};
+
+		const recs = await axios
+			.post("https://spotify-flask-1.herokuapp.com", { DSModel })
+			.then(res => res)
+			.catch(err => err);
 
 		const recsExample = [
 			"7GI1Weh21oGJYeSbrtOyR1",
@@ -31,7 +37,7 @@ router.get("/:id/recommend", async (req, res) => {
 			.then(data => data)
 			.catch(err => err);
 
-		res.status(200).json({ recommended_songs });
+		res.status(200).json({ recommended_songs, DSModel });
 	} catch (error) {
 		res.status(500).json({ errorMessage: error });
 	}
