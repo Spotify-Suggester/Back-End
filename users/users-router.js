@@ -7,26 +7,41 @@ const Users = require("../users/users-model");
 const getSong = require("../spotify/getSong");
 
 // Get recommended
-router.get("/:id/recommend", async (req, res) => {
+router.post("/:id/recommend", async (req, res) => {
 	const { id } = req.params;
+	const mood = req.body;
+
+	if (!mood) {
+		res.status(400).json({ message: "Mood parameters required" });
+		return;
+	}
 
 	try {
 		const favorites = await Favorites.findFavoriteSongs(id);
-		console.log(favorites);
-		// const recs = await axios
-		// 	.post("https://spotify-flask-1.herokuapp.com", { favorites })
-		// 	.then(res => res)
-		// 	.catch(err => err);
 
-		const recsExample = [
-			"7GI1Weh21oGJYeSbrtOyR1",
-			"6DavaRzYekSRYl0VMHnlwo",
-			"4QuSTcFDbHPrDFzxFxeF5s",
-			"0shBLNwbMS8i903cWwnwln",
-			"5NRJrFPd3rfJRJUMWxV7zr",
-		];
+		const DSModel = {
+			favorite_songs: favorites,
+			mood: [
+				{
+					...mood,
+					popularity: 0,
+					duration_ms: 0,
+					key: 0,
+					mode: 0,
+					time_signature: 0,
+					id: 0,
+					name: 0,
+					artist: 0,
+				},
+			],
+		};
 
-		const getData = async () => Promise.all(recsExample.map(songId => getSong(songId)));
+		const recs = await axios
+			.post("https://spotify-flask-1.herokuapp.com", { ...DSModel })
+			.then(res => res)
+			.catch(err => err);
+
+		const getData = async () => Promise.all(recs.data.map(songId => getSong(songId)));
 		const recommended_songs = await getData()
 			.then(data => data)
 			.catch(err => err);
@@ -40,7 +55,6 @@ router.get("/:id/recommend", async (req, res) => {
 // Add song to user favorites
 router.post("/:id/favorites", async (req, res) => {
 	const songId = req.body.song_id;
-	console.log("Song Id: ", songId);
 	const { id } = req.params;
 
 	if (!songId) res.status(400).json({ message: "Song id is required" });
@@ -48,20 +62,14 @@ router.post("/:id/favorites", async (req, res) => {
 	try {
 		let favorite_songs;
 		const found = await Songs.findById(songId);
-		console.log("TEST");
-		console.log("Found: ", found);
 		if (!found) {
 			const song = await getSong(songId)
 				.then(res => res)
 				.catch(err => err);
 
-			console.log("Spotify Song: ", song);
 			const newSong = await Songs.add(song);
 
-			console.log("newSong: ", newSong);
 			favorite_songs = await Favorites.addSongToFavorites(songId, id);
-
-			console.log("favorite_songs: ", favorite_songs);
 
 			res.status(200).json({
 				...favorite_songs,

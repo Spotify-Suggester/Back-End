@@ -8,10 +8,8 @@ module.exports = {
 };
 
 async function add(song) {
-	console.log("Add song: ", song);
 	try {
 		const [id] = await db("songs").insert(song, "id");
-		console.log("ID", id);
 		return findById(id);
 	} catch (error) {
 		console.log(error);
@@ -50,7 +48,6 @@ async function findById(id) {
 	try {
 		const songPromise = db("songs").where({ id }).first();
 		const song = await songPromise.then(res => res).catch(err => err);
-		console.log("findById song: ", song);
 		return song;
 	} catch (error) {
 		console.log(error);
