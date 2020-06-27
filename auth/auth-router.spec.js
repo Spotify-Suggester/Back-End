@@ -65,7 +65,7 @@ describe("testing the /login endpoint", () => {
             username:'tran',
             password:'notwhatever'
         })
-        expect(result.statusCode).toBe(500)
+        expect(result.statusCode).toBe(401)
     })
 
     beforeAll(async () => {
