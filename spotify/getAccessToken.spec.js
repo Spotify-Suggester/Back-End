@@ -1,5 +1,4 @@
 const server = require("../api/server");
-const request = require("supertest");
 const getAccessToken = require("./getAccessToken");
 
 describe("getAccessToken", () => {

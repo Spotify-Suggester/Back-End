@@ -11,27 +11,29 @@ router.post("/:id/recommend", async (req, res) => {
 	const { id } = req.params;
 	const mood = req.body;
 
+	if (!mood) {
+		res.status(400).json({ message: "Mood parameters required" });
+		return;
+	}
+
 	try {
 		const favorites = await Favorites.findFavoriteSongs(id);
 
-		var data = [...favorites, mood];
-		
-		var avg = Array.from(data.reduce(
-				(acc, obj) => Object.keys(obj).reduce( 
-					(acc, key) => typeof obj[key] == "number"
-						? acc.set(key, (acc.get(key) || []).concat(obj[key]))
-						: acc,
-				acc),
-			new Map()), 
-				([name, values]) =>
-					({ name, average: values.reduce( (a,b) => a+b ) / values.length })
-			);
-		
-		console.log('AVERAGE: ', avg);
-
 		const DSModel = {
 			favorite_songs: favorites,
-			mood,
+			mood: [
+				{
+					...mood,
+					popularity: 0,
+					duration_ms: 0,
+					key: 0,
+					mode: 0,
+					time_signature: 0,
+					id: 0,
+					name: 0,
+					artist: 0,
+				},
+			],
 		};
 
 		const recs = await axios
@@ -39,20 +41,12 @@ router.post("/:id/recommend", async (req, res) => {
 			.then(res => res)
 			.catch(err => err);
 
-		const recsExample = [
-			"7GI1Weh21oGJYeSbrtOyR1",
-			"6DavaRzYekSRYl0VMHnlwo",
-			"4QuSTcFDbHPrDFzxFxeF5s",
-			"0shBLNwbMS8i903cWwnwln",
-			"5NRJrFPd3rfJRJUMWxV7zr",
-		];
-
-		const getData = async () => Promise.all(recsExample.map(songId => getSong(songId)));
+		const getData = async () => Promise.all(recs.data.map(songId => getSong(songId)));
 		const recommended_songs = await getData()
 			.then(data => data)
 			.catch(err => err);
 
-		res.status(200).json({ recommended_songs, DSModel });
+		res.status(200).json({ recommended_songs });
 	} catch (error) {
 		res.status(500).json({ errorMessage: error });
 	}
@@ -76,7 +70,6 @@ router.post("/:id/favorites", async (req, res) => {
 			const newSong = await Songs.add(song);
 
 			favorite_songs = await Favorites.addSongToFavorites(songId, id);
-
 
 			res.status(200).json({
 				...favorite_songs,
