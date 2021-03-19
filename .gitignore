@@ -115,4 +115,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-/data/users.db3
+data/*.db3
+data/test.db3
