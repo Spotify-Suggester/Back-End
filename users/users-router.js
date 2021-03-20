@@ -5,11 +5,21 @@ const Favorites = require("../users/favorite_songs-model");
 const Songs = require("../songs/songs-model");
 const Users = require("../users/users-model");
 const getSong = require("../spotify/getSong");
+const getAccessToken = require("../spotify/getAccessToken");
+const qs = require("querystring");
 
 // Get recommended
 router.post("/:id/recommend", async (req, res) => {
 	const { id } = req.params;
 	const mood = req.body;
+
+	const access_token = await getAccessToken();
+	const withAccessToken = () =>
+		axios.create({
+			headers: {
+				authorization: `Bearer ${access_token}`,
+			},
+		});
 
 	if (!mood) {
 		res.status(400).json({ message: "Mood parameters required" });
@@ -18,30 +28,34 @@ router.post("/:id/recommend", async (req, res) => {
 
 	try {
 		const favorites = await Favorites.findFavoriteSongs(id);
+		const favsTrackIdsStr = favorites
+			.map(fav => fav.id)
+			.slice(0, 5)
+			.join(",");
 
-		const DSModel = {
-			favorite_songs: favorites,
-			mood: [
-				{
-					...mood,
-					popularity: 0,
-					duration_ms: 0,
-					key: 0,
-					mode: 0,
-					time_signature: 0,
-					id: 0,
-					name: 0,
-					artist: 0,
-				},
-			],
+		const recModel = {
+			target_danceability: mood.danceability,
+			target_energy: mood.energy,
+			target_liveness: mood.liveness,
+			target_speechiness: mood.speechiness,
+			target_valence: mood.valence,
+			target_acousticness: mood.acousticness,
+			target_instrumentalness: mood.instrumentalness,
+			target_tempo: mood.tempo,
+			seed_tracks: favsTrackIdsStr,
+			limit: 15,
 		};
 
-		const recs = await axios
-			.post("https://spotify-flask-1.herokuapp.com", { ...DSModel })
+		const recQs = qs.stringify(recModel);
+
+		const recSongs = await withAccessToken()
+			.get(`https://api.spotify.com/v1/recommendations?${recQs}`)
 			.then(res => res)
 			.catch(err => err);
 
-		const getData = async () => Promise.all(recs.data.map(songId => getSong(songId)));
+		const getData = async () =>
+			Promise.all(recSongs.data.tracks.map(track => getSong(track.id)));
+
 		const recommended_songs = await getData()
 			.then(data => data)
 			.catch(err => err);
