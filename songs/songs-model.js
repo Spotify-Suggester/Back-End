@@ -36,7 +36,9 @@ function find() {
 		"loudness",
 		"speechiness",
 		"valence",
-		"tempo"
+		"tempo",
+		"s.preview_url",
+		"s.open_url"
 	);
 }
 

@@ -76,7 +76,9 @@ async function findFavoriteSongs(userId) {
 			"s.loudness",
 			"s.speechiness",
 			"s.valence",
-			"s.tempo"
+			"s.tempo",
+			"s.preview_url",
+			"s.open_url",
 		)
 		.where("fs.owner_id", userId);
 
