@@ -40,6 +40,8 @@ const songPromise = async songId => {
 		speechiness: songFeatures.speechiness,
 		valence: songFeatures.valence,
 		tempo: songFeatures.tempo,
+		preview_url: song.preview_url,
+		open_url: song.external_urls.spotify,
 	};
 
 	return Promise.resolve(songModel);
