@@ -13,8 +13,8 @@ exports.up = function (knex) {
 			table.string("artist", 128).notNullable();
 			table.string("album", 128).notNullable();
 			table.string("image_url", 128).notNullable();
-			table.string("preview_url", 128).notNullable();
-			table.string("open_url", 128).notNullable();
+			table.string("preview_url", 128);
+			table.string("open_url", 128);
 			table.decimal("popularity").unsigned();
 			table.decimal("duration_ms").unsigned();
 			table.decimal("key").unsigned();
